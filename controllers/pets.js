@@ -8,7 +8,7 @@ const getPets = (req,res) => {
     .then(pets => {
         res.status(200).json(pets); 
       }).catch(err => {
-        res.status(500).send()
+        res.status(500).send(err)
       })
 }
 
@@ -18,45 +18,51 @@ const getPet = (req,res) => {
     .then(pet => {
         res.status(200).json(pet); 
       }).catch(err => {
-        res.status(500).send()
+        res.status(500).send(err)
       })
 }
 
 const createPet = (req, res) => {
-  const {id, species, owner_id, age, name} = req.body
-  Pet.createPet(id, species, owner_id, age, name)
+  const {species, owner_id, age, name} = req.body
+  Pet.createPet(species, owner_id, age, name)
     .then(pet => {
       res.status(201).json(pet)
     }).catch(err => {
-      res.status(500).send()
+      res.status(500).send(err)
     })
 }
 
 const deletePet = (req, res) => {
-  Pet.deletePet(req.id)
+  Pet.deletePet(req.params.id)
     .then(() => {
       res.status(204).send()
     }).catch(err => {
-      res.status(500).send()
+      res.status(500).send(err)
     })
 }
 
 const updatePet = (req, res) => {
-  //use regex to check the email is properly formatted
-  //res with 400 if email is bad
-  let newObj = Object.assign(req.person, req.body) 
-  User.updatePet(req.id, newObj)
+  Pet.updatePet(req.params.id, req.body)
     .then(person => {
       res.status(200).json(person)
     }).catch(err => {
-      res.status(500).send()
+      res.status(500).send(err)
     })
 }
 
+const needPet = (req, res) => {
+  Pet.needPet()
+    .then(pet => {
+      res.status(200).json(pet)
+    }).catch(err => {
+      res.status(500).send(err)
+    })
+}
 module.exports = {
     getPets,
     getPet,
     createPet,
     deletePet,
-    updatePet
+    updatePet,
+    needPet
 }

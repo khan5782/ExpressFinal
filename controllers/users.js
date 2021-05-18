@@ -7,7 +7,7 @@ const getUsers = (req,res) => {
     .then(users => {
         res.status(200).json(users); 
       }).catch(err => {
-        res.status(500).send()
+        res.status(500).send(err)
       })
 }
 
@@ -17,38 +17,56 @@ const getUser = (req,res) => {
     .then(user => {
         res.status(200).json(user); 
       }).catch(err => {
-        res.status(500).send()
+        res.status(500).send(err)
       })
 }
 
-const createUser = (req, res) => {
-  const {id, name, username, password} = req.body
-  User.createUser(id, name, username, password)
-    .then(user => {
+const  createUser =  (req, res) => {
+  const {name, username, password} = req.body
+  User.createUser(name, username, password)
+    .then(user => {   
       res.status(201).json(user)
     }).catch(err => {
-      res.status(500).send()
+      res.status(500).send(err)
     })
 }
 
+
 const deleteUser = (req, res) => {
-  User.deleteUser(req.id)
+  User.deleteUser(req.params.id)
     .then(() => {
       res.status(204).send()
     }).catch(err => {
-      res.status(500).send()
+      res.status(500).send(err)
     })
 }
 
 const updateUser = (req, res) => {
-  //use regex to check the email is properly formatted
-  //res with 400 if email is bad
-  let newObj = Object.assign(req.person, req.body) 
-  User.updateUser(req.id, newObj)
-    .then(person => {
-      res.status(200).json(person)
+  User.updateUser(req.params.id, req.body)
+    .then(user => {
+      res.status(200).json(user)
     }).catch(err => {
-      res.status(500).send()
+      res.status(500).send(err)
+    })
+}
+
+const getUsersPets = (req, res) => {
+  const id = req.params.id
+  User.getUsersPets(id)
+    .then(user => {
+      res.status(200).json(user)
+    }).catch(err => {
+      res.status(500).send(err)
+    })
+}
+
+const getByUsername = (req, res) => {
+  const username = req.params.username
+  User.getByUsername(username)
+    .then(user => {
+      res.status(200).json(user)
+    }).catch(err => {
+      res.status(500).send(err)
     })
 }
 
@@ -57,5 +75,7 @@ module.exports = {
     getUser,
     createUser,
     deleteUser,
-    updateUser
+    updateUser,
+    getUsersPets,
+    getByUsername
 }
