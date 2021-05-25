@@ -13,7 +13,7 @@ app.get('/', async (req, res) => {
 })
 
 app.get('/users/getByUsername/:username', userController.getByUsername)
-app.get('/users/:id/pets', userController.getUsersPets)
+app.get('/pets/owned/:id', petController.getByOwner)
 app.get('/pets/needadoption', petController.needPet)
 
 app.get('/users', userController.getUsers)

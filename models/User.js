@@ -30,16 +30,11 @@ class User {
         return query(queryText, [name, username, password, id]).then(results => results.rows[0] )
     }
 
-    static getUsersPets(id){
-        const queryText = "SELECT * FROM pets WHERE owner_id = $1";
-        return query(queryText, [id]).then(results => results.rows)
-    }
-
     static getByUsername(username){
         const queryText = "SELECT * FROM users WHERE username = $1";
         return query(queryText, [username]).then(results => results.rows[0])
     }
-        
+    
 }
 
 module.exports = User

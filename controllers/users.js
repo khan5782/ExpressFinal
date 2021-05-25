@@ -50,15 +50,7 @@ const updateUser = (req, res) => {
     })
 }
 
-const getUsersPets = (req, res) => {
-  const id = req.params.id
-  User.getUsersPets(id)
-    .then(user => {
-      res.status(200).json(user)
-    }).catch(err => {
-      res.status(500).send(err)
-    })
-}
+
 
 const getByUsername = (req, res) => {
   const username = req.params.username
@@ -70,12 +62,13 @@ const getByUsername = (req, res) => {
     })
 }
 
+
+
 module.exports = {
     getUsers,
     getUser,
     createUser,
     deleteUser,
     updateUser,
-    getUsersPets,
     getByUsername
 }

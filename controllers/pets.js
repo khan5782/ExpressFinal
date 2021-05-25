@@ -58,11 +58,23 @@ const needPet = (req, res) => {
       res.status(500).send(err)
     })
 }
+
+const getByOwner = (req, res) => {
+  let id = req.params.id
+  Pet.getUsersPets(id)
+    .then(pet => {
+      res.status(200).json(pet)
+    }).catch(err => {
+      res.status(500).send(err)
+    })
+}
+
 module.exports = {
     getPets,
     getPet,
     createPet,
     deletePet,
     updatePet,
-    needPet
+    needPet,
+    getByOwner
 }
