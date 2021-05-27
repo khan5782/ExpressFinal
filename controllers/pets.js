@@ -61,12 +61,19 @@ const needPet = (req, res) => {
 
 const getByOwner = (req, res) => {
   let id = req.params.id
+  if(id != req.session.user?.id){
+    return res.status(500).send([])
+  }
   Pet.getUsersPets(id)
     .then(pet => {
       res.status(200).json(pet)
     }).catch(err => {
       res.status(500).send(err)
     })
+}
+
+const claimPet = (req,res) => {
+  
 }
 
 module.exports = {
@@ -76,5 +83,6 @@ module.exports = {
     deletePet,
     updatePet,
     needPet,
-    getByOwner
+    getByOwner,
+    claimPet
 }

@@ -39,6 +39,11 @@ class Pet {
         const queryText = "SELECT * FROM pets WHERE owner_id = $1";
         return query(queryText, [id]).then(results => results.rows)
     }
+
+    static claimPet(){
+        
+    }
+ 
 }
 
 module.exports = Pet

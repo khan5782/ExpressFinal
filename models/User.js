@@ -1,4 +1,5 @@
 const {query} = require('../db/db')
+const bcrypt = require('bcrypt')
 
 class User {
 
@@ -35,6 +36,13 @@ class User {
         return query(queryText, [username]).then(results => results.rows[0])
     }
     
+    static login(username, password){
+        const queryText = "SELECT * FROM users WHERE username = $1";
+        return query(queryText, [username]).then(results => {
+            return results.rows[0]
+        })
+    }
+ 
 }
 
 module.exports = User
