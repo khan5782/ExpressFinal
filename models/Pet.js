@@ -40,10 +40,11 @@ class Pet {
         return query(queryText, [id]).then(results => results.rows)
     }
 
-    static claimPet(){
-        
+    static claimPet(petId, userId){
+        const queryText = "UPDATE pets SET owner_id = $1 WHERE id = $2 AND owner_id is null  RETURNING id, species, owner_id, age, name, description, image_url"
+        return query(queryText, [userId, petId]).then(results => results.rows[0])
     }
- 
+     
 }
 
 module.exports = Pet

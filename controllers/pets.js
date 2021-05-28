@@ -60,8 +60,8 @@ const needPet = (req, res) => {
 }
 
 const getByOwner = (req, res) => {
-  let id = req.params.id
-  if(id != req.session.user?.id){
+  let id = req.session.user?.id
+  if(!id){
     return res.status(500).send([])
   }
   Pet.getUsersPets(id)
@@ -73,7 +73,23 @@ const getByOwner = (req, res) => {
 }
 
 const claimPet = (req,res) => {
-  
+  let petId = req.params.petId
+  let userId = req.session.user?.id
+  if(!userId){
+    console.log('claimpet', 'invalid session')
+    res.status(500).send({
+      err: "Invalid Session"
+    })
+    return
+  }
+  Pet.claimPet(petId, userId)
+  .then(pet => {
+    console.log('claimpet', pet)
+    res.status(200).json(pet)
+  }).catch(err => {
+    console.log('claimpet', err)
+    res.status(500).send(err)
+  })
 }
 
 module.exports = {

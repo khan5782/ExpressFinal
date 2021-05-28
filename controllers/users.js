@@ -13,23 +13,17 @@ const getUsers = (req,res) => {
 }
 
 const getUser = (req,res) => {
-  const id = req.params.id
-  console.log('getUser', id, req.session.user?.id)
-  if(id != req.session.user?.id){
-    return res.status(500).send({})
+  if(req.session.user){
+    res.status(200).json({
+      // all props in req session in user and not include pass
+      ...req.session.user, 
+      password: null
+    })
+  } else {
+    res.status(500).send({
+      err: 'User Is not logged In'
+    })
   }
-  User.getUser(id)
-    .then(user => {
-      console.log('getUser', user)
-        res.status(200).json({
-          id: user.id,
-          name: user.name,
-          username: user.username
-        }); 
-      }).catch(err => {
-        console.log( 'getUser', err)
-        res.status(500).send(err)
-      })
 }
 
 const  createUser =  (req, res) => {
@@ -50,9 +44,9 @@ const  createUser =  (req, res) => {
 
 
 const deleteUser = (req, res) => {
-  let id = req.params.id;
-  console.log('deletuser', id , req.session.user?.id)
-  if(id != req.session.user?.id){
+  let id = req.session.user?.id;
+  console.log('deletuser', id)
+  if(!id){
     return res.status(500).send({
       err: "Invalid Session"
     })
@@ -70,9 +64,9 @@ const deleteUser = (req, res) => {
 }
 
 const updateUser = (req, res) => {
-  let id = req.params.id;
-  console.log('updateuser',id, req.session.user?.id)
-  if(id != req.session.user?.id){
+  let id = req.session.user?.id;
+  console.log('updateuser',id)
+  if(!id){
     return res.status(500).send({
       err: "Invalid Session"
     })
@@ -141,7 +135,11 @@ const login = (req, res) => {
       res.status(500).send(err)
     })
  }
- 
+
+ const logOut = (req, res) => {
+  req.session.user = null
+  res.sendStatus(200)
+ }
 
 module.exports = {
     getUsers,
@@ -150,5 +148,6 @@ module.exports = {
     deleteUser,
     updateUser,
     getByUsername,
-    login
+    login,
+    logOut
 }

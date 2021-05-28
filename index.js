@@ -22,22 +22,23 @@ app.get('/', async (req, res) => {
     res.send('EXPRESS!')    
 })
 
-app.get('/pets/owned/:id', petController.getByOwner)
+app.get('/pets/owned', petController.getByOwner)
 app.get('/pets/needadoption', petController.needPet)
 
 app.get('/users', userController.getUsers)
 app.get('/pets', petController.getPets)
-app.get('/users/:id', userController.getUser)
+app.get('/user', userController.getUser)
 app.get('/pets/:id', petController.getPet)
 
 app.post('/users', userController.createUser)
 app.post('/pets', petController.createPet)
 app.post('/users/login', userController.login)
+app.get('/users/logout', userController.logOut)
 
-app.delete('/users/:id', userController.deleteUser)
+app.delete('/users', userController.deleteUser)
 app.delete('/pets/:id', petController.deletePet)
 
-app.put('/users/:id', userController.updateUser)
+app.put('/users', userController.updateUser)
 app.put('/pets/:id', petController.updatePet)
 app.put('/pets/claim/:petId', petController.claimPet)
 
